@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="6a0f0708c5a14bbdad6f55bbbe0ea7ff" Name="Diagram1">
+        <EntityTypeShape EntityType="CollegeAttestationDBModel.Classroom" Width="1.5" PointX="5.25" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="CollegeAttestationDBModel.Debt" Width="1.5" PointX="5.25" PointY="6.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CollegeAttestationDBModel.Discipline" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CollegeAttestationDBModel.Group" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CollegeAttestationDBModel.ResitSchedule" Width="1.5" PointX="7.5" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CollegeAttestationDBModel.Schedule" Width="1.5" PointX="10.5" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CollegeAttestationDBModel.Student" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CollegeAttestationDBModel.Teacher" Width="1.5" PointX="3" PointY="9.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CollegeAttestationDBModel.TimeSlot" Width="1.5" PointX="8.25" PointY="3" IsExpanded="true" />
+        <AssociationConnector Association="CollegeAttestationDBModel.FK_ResitSchedules_Classrooms" ManuallyRouted="false" />
+        <AssociationConnector Association="CollegeAttestationDBModel.FK_Schedules_Classrooms" ManuallyRouted="false" />
+        <AssociationConnector Association="CollegeAttestationDBModel.FK_Debts_Disciplines" ManuallyRouted="false" />
+        <AssociationConnector Association="CollegeAttestationDBModel.FK_Debts_Students" ManuallyRouted="false" />
+        <AssociationConnector Association="CollegeAttestationDBModel.FK_Debts_Teachers" ManuallyRouted="false" />
+        <AssociationConnector Association="CollegeAttestationDBModel.FK_ResitSchedules_Debts" ManuallyRouted="false" />
+        <AssociationConnector Association="CollegeAttestationDBModel.FK_Schedules_Debts" ManuallyRouted="false" />
+        <AssociationConnector Association="CollegeAttestationDBModel.FK_Students_Groups" ManuallyRouted="false" />
+        <AssociationConnector Association="CollegeAttestationDBModel.FK_Schedules_TimeSlots" ManuallyRouted="false" />
+        <AssociationConnector Association="CollegeAttestationDBModel.TeacherDisciplines" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

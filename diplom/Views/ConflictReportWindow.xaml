@@ -1,0 +1,59 @@
+<Window x:Class="diplom.Views.ConflictReportWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Отчет конфликтов" Height="400" Width="700">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,10">
+            <TextBlock Text="Краткая статистика конфликтов:" FontWeight="Bold" VerticalAlignment="Center"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1">
+            <StackPanel Margin="0,0,0,10">
+                <TextBlock FontWeight="Bold" Text="Краткая сводка по типам конфликтов:" />
+                <UniformGrid Columns="1" Margin="0,6,0,0">
+                    <TextBlock>
+                        <Run FontWeight="Bold">Конфликты с преподавателем:</Run>
+                        <Run> преподаватель назначен на два разных экзамена в одно и то же время</Run>
+                        <Run FontWeight="Bold"> — </Run>
+                        <Run x:Name="TbTeacherCount" />
+                    </TextBlock>
+
+                    <TextBlock>
+                        <Run FontWeight="Bold">Конфликаты по аудиториям:</Run>
+                        <Run> одна аудитория назначена на два экзамена одновременно</Run>
+                        <Run FontWeight="Bold"> — </Run>
+                        <Run x:Name="TbRoomCount" />
+                    </TextBlock>
+
+                    <TextBlock>
+                        <Run FontWeight="Bold">Критичные конфликты со студентом:</Run>
+                        <Run> студент назначен на два экзамена в одно и то же время</Run>
+                        <Run FontWeight="Bold"> — </Run>
+                        <Run x:Name="TbStudentCount" />
+                    </TextBlock>
+
+                    <TextBlock>
+                        <Run FontWeight="Bold">Мягкие конфликты (в один день):</Run>
+                        <Run> у студента несколько пересдач в один день (может быть допустимо)</Run>
+                        <Run FontWeight="Bold"> — </Run>
+                        <Run x:Name="TbSoftCount" />
+                    </TextBlock>
+                </UniformGrid>
+            </StackPanel>
+
+            <TextBlock Text="Примеры конфликтов (первые 200):" FontWeight="Bold" Margin="0,0,0,5"/>
+            <ListBox x:Name="LbExamples" Height="230"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+            <Button x:Name="BtnOpenReport" Content="Открыть CSV" Width="100" Margin="0,0,10,0" Click="BtnOpenReport_Click" />
+            <Button x:Name="BtnClose" Content="Закрыть" Width="90" Click="BtnClose_Click" />
+        </StackPanel>
+    </Grid>
+</Window>

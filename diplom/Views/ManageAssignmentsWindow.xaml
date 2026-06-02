@@ -1,0 +1,78 @@
+<Window x:Class="diplom.Views.ManageAssignmentsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Привязка преподавателей к предметам" Height="900" Width="1280"
+        MinHeight="700" MinWidth="1000"
+        WindowStartupLocation="CenterOwner" Background="#F8F9FA">
+    <Grid Margin="16">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="4*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0,0,0,12">
+            <TextBlock Text="Управление привязками преподавателей к дисциплинам" Style="{StaticResource MainTitleStyle}" VerticalAlignment="Center" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="12,0,0,0">
+                <Button x:Name="BtnToggleMode" Click="BtnToggleMode_Click" Style="{StaticResource SecondaryButtonStyle}" MinWidth="220" Padding="6" Margin="12,0,0,0">Режим: по дисциплине</Button>
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Список дисциплин -->
+        <GroupBox x:Name="GbDisciplines" Grid.Row="1" Grid.Column="0" Header="Дисциплины" Style="{StaticResource ModernGroupBox}" Margin="0,0,12,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <ListBox x:Name="LbDisciplines" DisplayMemberPath="DisciplineName" SelectedValuePath="DisciplineID" Margin="8" VerticalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Auto" MinHeight="640"/>
+                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="8">
+                    <Button x:Name="BtnRefreshDisc" Style="{StaticResource SecondaryButtonStyle}" Click="BtnRefreshDisc_Click" MinWidth="120" Padding="6">Обновить</Button>
+                </StackPanel>
+            </Grid>
+        </GroupBox>
+
+        <!-- Список преподавателей и привязки -->
+        <GroupBox x:Name="GbTeachersPanel" Grid.Row="1" Grid.Column="1" Header="Преподаватели и привязки" Style="{StaticResource ModernGroupBox}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <ListBox x:Name="LbTeachers" Grid.Column="0" DisplayMemberPath="FullName" SelectedValuePath="TeacherID" Margin="8" VerticalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Auto" MinHeight="640"/>
+
+                    <StackPanel Grid.Column="1" Margin="8" VerticalAlignment="Stretch">
+                        <TextBlock x:Name="TxtAssignedLabel" Text="Преподаватели, связанные с выбранной дисциплиной:" FontWeight="Bold" Margin="0,0,0,8"/>
+                        <ListBox x:Name="LbAssignedTeachers" DisplayMemberPath="FullName" SelectedValuePath="TeacherID" VerticalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Auto" MinHeight="400" />
+
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+                            <Button x:Name="BtnAssign" Style="{StaticResource SuccessButtonStyle}" Click="BtnAssign_Click" MinWidth="140" Padding="8">Назначить</Button>
+                            <Button x:Name="BtnUnassign" Style="{StaticResource DangerButtonStyle}" Click="BtnUnassign_Click" MinWidth="140" Padding="8" Margin="10,0,0,0">Отвязать</Button>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+
+                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="8">
+                    <Button x:Name="BtnSave" Style="{StaticResource PrimaryButtonStyle}" Click="BtnSave_Click" MinWidth="160" Padding="8">Сохранить изменения</Button>
+                    <Button x:Name="BtnClose" Style="{StaticResource SecondaryButtonStyle}" Click="BtnClose_Click" MinWidth="140" Padding="8" Margin="10,0,0,0">Закрыть</Button>
+                </StackPanel>
+
+            </Grid>
+        </GroupBox>
+
+    </Grid>
+</Window>

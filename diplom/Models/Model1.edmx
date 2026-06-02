@@ -1,0 +1,744 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище CollegeAttestationDBModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Classrooms">
+          <Key>
+            <PropertyRef Name="ClassroomID" />
+          </Key>
+          <Property Name="ClassroomID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClassroomNumber" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Capacity" Type="int" Nullable="false" />
+          <Property Name="ClassroomType" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Debts">
+          <Key>
+            <PropertyRef Name="DebtID" />
+          </Key>
+          <Property Name="DebtID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StudentID" Type="int" Nullable="false" />
+          <Property Name="DisciplineID" Type="int" Nullable="false" />
+          <Property Name="TeacherID" Type="int" Nullable="false" />
+          <Property Name="DebtStatus" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="DateRecorded" Type="datetime" Nullable="false" />
+          <Property Name="IsCleared" Type="bit" Nullable="false" />
+          <Property Name="DateCleared" Type="datetime" />
+          <Property Name="Grade" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Disciplines">
+          <Key>
+            <PropertyRef Name="DisciplineID" />
+          </Key>
+          <Property Name="DisciplineID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DisciplineName" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="TotalHours" Type="int" Nullable="false" />
+          <Property Name="ControlType" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Groups">
+          <Key>
+            <PropertyRef Name="GroupID" />
+          </Key>
+          <Property Name="GroupID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GroupName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Department" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Course" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ResitSchedules">
+          <Key>
+            <PropertyRef Name="ResitScheduleID" />
+          </Key>
+          <Property Name="ResitScheduleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DebtID" Type="int" Nullable="false" />
+          <Property Name="ScheduledDate" Type="datetime" Nullable="false" />
+          <Property Name="ClassroomID" Type="int" />
+          <Property Name="AttemptNumber" Type="int" Nullable="false" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Schedules">
+          <Key>
+            <PropertyRef Name="ScheduleID" />
+          </Key>
+          <Property Name="ScheduleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DebtID" Type="int" Nullable="false" />
+          <Property Name="ExamDate" Type="date" Nullable="false" />
+          <Property Name="TimeSlot" Type="int" Nullable="false" />
+          <Property Name="ClassroomID" Type="int" Nullable="false" />
+          <Property Name="TimeSlotID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Students">
+          <Key>
+            <PropertyRef Name="StudentID" />
+          </Key>
+          <Property Name="StudentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StudentCardNumber" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="MiddleName" Type="nvarchar" MaxLength="50" />
+          <Property Name="GroupID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TeacherDisciplines">
+          <Key>
+            <PropertyRef Name="TeacherID" />
+            <PropertyRef Name="DisciplineID" />
+          </Key>
+          <Property Name="TeacherID" Type="int" Nullable="false" />
+          <Property Name="DisciplineID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Teachers">
+          <Key>
+            <PropertyRef Name="TeacherID" />
+          </Key>
+          <Property Name="TeacherID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="MiddleName" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="TimeSlots">
+          <Key>
+            <PropertyRef Name="TimeSlotID" />
+          </Key>
+          <Property Name="TimeSlotID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SlotNumber" Type="int" Nullable="false" />
+          <Property Name="StartTime" Type="time" Precision="7" Nullable="false" />
+          <Property Name="EndTime" Type="time" Precision="7" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <Association Name="FK_Debts_Disciplines">
+          <End Role="Disciplines" Type="Self.Disciplines" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Debts" Type="Self.Debts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Disciplines">
+              <PropertyRef Name="DisciplineID" />
+            </Principal>
+            <Dependent Role="Debts">
+              <PropertyRef Name="DisciplineID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Debts_Students">
+          <End Role="Students" Type="Self.Students" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Debts" Type="Self.Debts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Students">
+              <PropertyRef Name="StudentID" />
+            </Principal>
+            <Dependent Role="Debts">
+              <PropertyRef Name="StudentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Debts_Teachers">
+          <End Role="Teachers" Type="Self.Teachers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Debts" Type="Self.Debts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teachers">
+              <PropertyRef Name="TeacherID" />
+            </Principal>
+            <Dependent Role="Debts">
+              <PropertyRef Name="TeacherID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ResitSchedules_Classrooms">
+          <End Role="Classrooms" Type="Self.Classrooms" Multiplicity="0..1" />
+          <End Role="ResitSchedules" Type="Self.ResitSchedules" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Classrooms">
+              <PropertyRef Name="ClassroomID" />
+            </Principal>
+            <Dependent Role="ResitSchedules">
+              <PropertyRef Name="ClassroomID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ResitSchedules_Debts">
+          <End Role="Debts" Type="Self.Debts" Multiplicity="1" />
+          <End Role="ResitSchedules" Type="Self.ResitSchedules" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Debts">
+              <PropertyRef Name="DebtID" />
+            </Principal>
+            <Dependent Role="ResitSchedules">
+              <PropertyRef Name="DebtID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Schedules_Classrooms">
+          <End Role="Classrooms" Type="Self.Classrooms" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Schedules" Type="Self.Schedules" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Classrooms">
+              <PropertyRef Name="ClassroomID" />
+            </Principal>
+            <Dependent Role="Schedules">
+              <PropertyRef Name="ClassroomID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Schedules_Debts">
+          <End Role="Debts" Type="Self.Debts" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Schedules" Type="Self.Schedules" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Debts">
+              <PropertyRef Name="DebtID" />
+            </Principal>
+            <Dependent Role="Schedules">
+              <PropertyRef Name="DebtID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Schedules_TimeSlots">
+          <End Role="TimeSlots" Type="Self.TimeSlots" Multiplicity="1" />
+          <End Role="Schedules" Type="Self.Schedules" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TimeSlots">
+              <PropertyRef Name="TimeSlotID" />
+            </Principal>
+            <Dependent Role="Schedules">
+              <PropertyRef Name="TimeSlotID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Students_Groups">
+          <End Role="Groups" Type="Self.Groups" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Students" Type="Self.Students" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Groups">
+              <PropertyRef Name="GroupID" />
+            </Principal>
+            <Dependent Role="Students">
+              <PropertyRef Name="GroupID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TD_Discipline">
+          <End Role="Disciplines" Type="Self.Disciplines" Multiplicity="1" />
+          <End Role="TeacherDisciplines" Type="Self.TeacherDisciplines" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Disciplines">
+              <PropertyRef Name="DisciplineID" />
+            </Principal>
+            <Dependent Role="TeacherDisciplines">
+              <PropertyRef Name="DisciplineID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TD_Teacher">
+          <End Role="Teachers" Type="Self.Teachers" Multiplicity="1" />
+          <End Role="TeacherDisciplines" Type="Self.TeacherDisciplines" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teachers">
+              <PropertyRef Name="TeacherID" />
+            </Principal>
+            <Dependent Role="TeacherDisciplines">
+              <PropertyRef Name="TeacherID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище CollegeAttestationDBModelContainer">
+          <EntitySet Name="Classrooms" EntityType="Self.Classrooms" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Debts" EntityType="Self.Debts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Disciplines" EntityType="Self.Disciplines" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Groups" EntityType="Self.Groups" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ResitSchedules" EntityType="Self.ResitSchedules" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Schedules" EntityType="Self.Schedules" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Students" EntityType="Self.Students" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TeacherDisciplines" EntityType="Self.TeacherDisciplines" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Teachers" EntityType="Self.Teachers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TimeSlots" EntityType="Self.TimeSlots" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Debts_Disciplines" Association="Self.FK_Debts_Disciplines">
+            <End Role="Disciplines" EntitySet="Disciplines" />
+            <End Role="Debts" EntitySet="Debts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Debts_Students" Association="Self.FK_Debts_Students">
+            <End Role="Students" EntitySet="Students" />
+            <End Role="Debts" EntitySet="Debts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Debts_Teachers" Association="Self.FK_Debts_Teachers">
+            <End Role="Teachers" EntitySet="Teachers" />
+            <End Role="Debts" EntitySet="Debts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ResitSchedules_Classrooms" Association="Self.FK_ResitSchedules_Classrooms">
+            <End Role="Classrooms" EntitySet="Classrooms" />
+            <End Role="ResitSchedules" EntitySet="ResitSchedules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ResitSchedules_Debts" Association="Self.FK_ResitSchedules_Debts">
+            <End Role="Debts" EntitySet="Debts" />
+            <End Role="ResitSchedules" EntitySet="ResitSchedules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Schedules_Classrooms" Association="Self.FK_Schedules_Classrooms">
+            <End Role="Classrooms" EntitySet="Classrooms" />
+            <End Role="Schedules" EntitySet="Schedules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Schedules_Debts" Association="Self.FK_Schedules_Debts">
+            <End Role="Debts" EntitySet="Debts" />
+            <End Role="Schedules" EntitySet="Schedules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Schedules_TimeSlots" Association="Self.FK_Schedules_TimeSlots">
+            <End Role="TimeSlots" EntitySet="TimeSlots" />
+            <End Role="Schedules" EntitySet="Schedules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Students_Groups" Association="Self.FK_Students_Groups">
+            <End Role="Groups" EntitySet="Groups" />
+            <End Role="Students" EntitySet="Students" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TD_Discipline" Association="Self.FK_TD_Discipline">
+            <End Role="Disciplines" EntitySet="Disciplines" />
+            <End Role="TeacherDisciplines" EntitySet="TeacherDisciplines" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TD_Teacher" Association="Self.FK_TD_Teacher">
+            <End Role="Teachers" EntitySet="Teachers" />
+            <End Role="TeacherDisciplines" EntitySet="TeacherDisciplines" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CollegeAttestationDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Classroom">
+          <Key>
+            <PropertyRef Name="ClassroomID" />
+          </Key>
+          <Property Name="ClassroomID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClassroomNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Capacity" Type="Int32" Nullable="false" />
+          <Property Name="ClassroomType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="ResitSchedules" Relationship="Self.FK_ResitSchedules_Classrooms" FromRole="Classrooms" ToRole="ResitSchedules" />
+          <NavigationProperty Name="Schedules" Relationship="Self.FK_Schedules_Classrooms" FromRole="Classrooms" ToRole="Schedules" />
+        </EntityType>
+        <EntityType Name="Debt">
+          <Key>
+            <PropertyRef Name="DebtID" />
+          </Key>
+          <Property Name="DebtID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StudentID" Type="Int32" Nullable="false" />
+          <Property Name="DisciplineID" Type="Int32" Nullable="false" />
+          <Property Name="TeacherID" Type="Int32" Nullable="false" />
+          <Property Name="DebtStatus" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DateRecorded" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsCleared" Type="Boolean" Nullable="false" />
+          <Property Name="DateCleared" Type="DateTime" Precision="3" />
+          <Property Name="Grade" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Discipline" Relationship="Self.FK_Debts_Disciplines" FromRole="Debts" ToRole="Disciplines" />
+          <NavigationProperty Name="Student" Relationship="Self.FK_Debts_Students" FromRole="Debts" ToRole="Students" />
+          <NavigationProperty Name="Teacher" Relationship="Self.FK_Debts_Teachers" FromRole="Debts" ToRole="Teachers" />
+          <NavigationProperty Name="ResitSchedules" Relationship="Self.FK_ResitSchedules_Debts" FromRole="Debts" ToRole="ResitSchedules" />
+          <NavigationProperty Name="Schedules" Relationship="Self.FK_Schedules_Debts" FromRole="Debts" ToRole="Schedules" />
+        </EntityType>
+        <EntityType Name="Discipline">
+          <Key>
+            <PropertyRef Name="DisciplineID" />
+          </Key>
+          <Property Name="DisciplineID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DisciplineName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TotalHours" Type="Int32" Nullable="false" />
+          <Property Name="ControlType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Debts" Relationship="Self.FK_Debts_Disciplines" FromRole="Disciplines" ToRole="Debts" />
+          <NavigationProperty Name="Teachers" Relationship="Self.TeacherDisciplines" FromRole="Disciplines" ToRole="Teachers" />
+        </EntityType>
+        <EntityType Name="Group">
+          <Key>
+            <PropertyRef Name="GroupID" />
+          </Key>
+          <Property Name="GroupID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GroupName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Department" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Course" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Students" Relationship="Self.FK_Students_Groups" FromRole="Groups" ToRole="Students" />
+        </EntityType>
+        <EntityType Name="ResitSchedule">
+          <Key>
+            <PropertyRef Name="ResitScheduleID" />
+          </Key>
+          <Property Name="ResitScheduleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DebtID" Type="Int32" Nullable="false" />
+          <Property Name="ScheduledDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ClassroomID" Type="Int32" />
+          <Property Name="AttemptNumber" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Classroom" Relationship="Self.FK_ResitSchedules_Classrooms" FromRole="ResitSchedules" ToRole="Classrooms" />
+          <NavigationProperty Name="Debt" Relationship="Self.FK_ResitSchedules_Debts" FromRole="ResitSchedules" ToRole="Debts" />
+        </EntityType>
+        <EntityType Name="Schedule">
+          <Key>
+            <PropertyRef Name="ScheduleID" />
+          </Key>
+          <Property Name="ScheduleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DebtID" Type="Int32" Nullable="false" />
+          <Property Name="ExamDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="TimeSlot" Type="Int32" Nullable="false" />
+          <Property Name="ClassroomID" Type="Int32" Nullable="false" />
+          <Property Name="TimeSlotID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Classroom" Relationship="Self.FK_Schedules_Classrooms" FromRole="Schedules" ToRole="Classrooms" />
+          <NavigationProperty Name="Debt" Relationship="Self.FK_Schedules_Debts" FromRole="Schedules" ToRole="Debts" />
+          <NavigationProperty Name="TimeSlot1" Relationship="Self.FK_Schedules_TimeSlots" FromRole="Schedules" ToRole="TimeSlots" />
+        </EntityType>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="StudentID" />
+          </Key>
+          <Property Name="StudentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StudentCardNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="GroupID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Debts" Relationship="Self.FK_Debts_Students" FromRole="Students" ToRole="Debts" />
+          <NavigationProperty Name="Group" Relationship="Self.FK_Students_Groups" FromRole="Students" ToRole="Groups" />
+        </EntityType>
+        <EntityType Name="Teacher">
+          <Key>
+            <PropertyRef Name="TeacherID" />
+          </Key>
+          <Property Name="TeacherID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Debts" Relationship="Self.FK_Debts_Teachers" FromRole="Teachers" ToRole="Debts" />
+          <NavigationProperty Name="Disciplines" Relationship="Self.TeacherDisciplines" FromRole="Teachers" ToRole="Disciplines" />
+        </EntityType>
+        <EntityType Name="TimeSlot">
+          <Key>
+            <PropertyRef Name="TimeSlotID" />
+          </Key>
+          <Property Name="TimeSlotID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SlotNumber" Type="Int32" Nullable="false" />
+          <Property Name="StartTime" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="EndTime" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Schedules" Relationship="Self.FK_Schedules_TimeSlots" FromRole="TimeSlots" ToRole="Schedules" />
+        </EntityType>
+        <Association Name="FK_ResitSchedules_Classrooms">
+          <End Role="Classrooms" Type="Self.Classroom" Multiplicity="0..1" />
+          <End Role="ResitSchedules" Type="Self.ResitSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Classrooms">
+              <PropertyRef Name="ClassroomID" />
+            </Principal>
+            <Dependent Role="ResitSchedules">
+              <PropertyRef Name="ClassroomID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Schedules_Classrooms">
+          <End Role="Classrooms" Type="Self.Classroom" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Schedules" Type="Self.Schedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Classrooms">
+              <PropertyRef Name="ClassroomID" />
+            </Principal>
+            <Dependent Role="Schedules">
+              <PropertyRef Name="ClassroomID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Debts_Disciplines">
+          <End Role="Disciplines" Type="Self.Discipline" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Debts" Type="Self.Debt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Disciplines">
+              <PropertyRef Name="DisciplineID" />
+            </Principal>
+            <Dependent Role="Debts">
+              <PropertyRef Name="DisciplineID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Debts_Students">
+          <End Role="Students" Type="Self.Student" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Debts" Type="Self.Debt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Students">
+              <PropertyRef Name="StudentID" />
+            </Principal>
+            <Dependent Role="Debts">
+              <PropertyRef Name="StudentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Debts_Teachers">
+          <End Role="Teachers" Type="Self.Teacher" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Debts" Type="Self.Debt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teachers">
+              <PropertyRef Name="TeacherID" />
+            </Principal>
+            <Dependent Role="Debts">
+              <PropertyRef Name="TeacherID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ResitSchedules_Debts">
+          <End Role="Debts" Type="Self.Debt" Multiplicity="1" />
+          <End Role="ResitSchedules" Type="Self.ResitSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Debts">
+              <PropertyRef Name="DebtID" />
+            </Principal>
+            <Dependent Role="ResitSchedules">
+              <PropertyRef Name="DebtID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Schedules_Debts">
+          <End Role="Debts" Type="Self.Debt" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Schedules" Type="Self.Schedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Debts">
+              <PropertyRef Name="DebtID" />
+            </Principal>
+            <Dependent Role="Schedules">
+              <PropertyRef Name="DebtID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Students_Groups">
+          <End Role="Groups" Type="Self.Group" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Students" Type="Self.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Groups">
+              <PropertyRef Name="GroupID" />
+            </Principal>
+            <Dependent Role="Students">
+              <PropertyRef Name="GroupID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Schedules_TimeSlots">
+          <End Role="TimeSlots" Type="Self.TimeSlot" Multiplicity="1" />
+          <End Role="Schedules" Type="Self.Schedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TimeSlots">
+              <PropertyRef Name="TimeSlotID" />
+            </Principal>
+            <Dependent Role="Schedules">
+              <PropertyRef Name="TimeSlotID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TeacherDisciplines">
+          <End Role="Disciplines" Type="Self.Discipline" Multiplicity="*" />
+          <End Role="Teachers" Type="Self.Teacher" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="CollegeAttestationDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Classrooms" EntityType="Self.Classroom" />
+          <EntitySet Name="Debts" EntityType="Self.Debt" />
+          <EntitySet Name="Disciplines" EntityType="Self.Discipline" />
+          <EntitySet Name="Groups" EntityType="Self.Group" />
+          <EntitySet Name="ResitSchedules" EntityType="Self.ResitSchedule" />
+          <EntitySet Name="Schedules" EntityType="Self.Schedule" />
+          <EntitySet Name="Students" EntityType="Self.Student" />
+          <EntitySet Name="Teachers" EntityType="Self.Teacher" />
+          <EntitySet Name="TimeSlots" EntityType="Self.TimeSlot" />
+          <AssociationSet Name="FK_ResitSchedules_Classrooms" Association="Self.FK_ResitSchedules_Classrooms">
+            <End Role="Classrooms" EntitySet="Classrooms" />
+            <End Role="ResitSchedules" EntitySet="ResitSchedules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Schedules_Classrooms" Association="Self.FK_Schedules_Classrooms">
+            <End Role="Classrooms" EntitySet="Classrooms" />
+            <End Role="Schedules" EntitySet="Schedules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Debts_Disciplines" Association="Self.FK_Debts_Disciplines">
+            <End Role="Disciplines" EntitySet="Disciplines" />
+            <End Role="Debts" EntitySet="Debts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Debts_Students" Association="Self.FK_Debts_Students">
+            <End Role="Students" EntitySet="Students" />
+            <End Role="Debts" EntitySet="Debts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Debts_Teachers" Association="Self.FK_Debts_Teachers">
+            <End Role="Teachers" EntitySet="Teachers" />
+            <End Role="Debts" EntitySet="Debts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ResitSchedules_Debts" Association="Self.FK_ResitSchedules_Debts">
+            <End Role="Debts" EntitySet="Debts" />
+            <End Role="ResitSchedules" EntitySet="ResitSchedules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Schedules_Debts" Association="Self.FK_Schedules_Debts">
+            <End Role="Debts" EntitySet="Debts" />
+            <End Role="Schedules" EntitySet="Schedules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Students_Groups" Association="Self.FK_Students_Groups">
+            <End Role="Groups" EntitySet="Groups" />
+            <End Role="Students" EntitySet="Students" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Schedules_TimeSlots" Association="Self.FK_Schedules_TimeSlots">
+            <End Role="TimeSlots" EntitySet="TimeSlots" />
+            <End Role="Schedules" EntitySet="Schedules" />
+          </AssociationSet>
+          <AssociationSet Name="TeacherDisciplines" Association="Self.TeacherDisciplines">
+            <End Role="Disciplines" EntitySet="Disciplines" />
+            <End Role="Teachers" EntitySet="Teachers" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище CollegeAttestationDBModelContainer" CdmEntityContainer="CollegeAttestationDBEntities">
+          <EntitySetMapping Name="Classrooms">
+            <EntityTypeMapping TypeName="CollegeAttestationDBModel.Classroom">
+              <MappingFragment StoreEntitySet="Classrooms">
+                <ScalarProperty Name="ClassroomID" ColumnName="ClassroomID" />
+                <ScalarProperty Name="ClassroomNumber" ColumnName="ClassroomNumber" />
+                <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+                <ScalarProperty Name="ClassroomType" ColumnName="ClassroomType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Debts">
+            <EntityTypeMapping TypeName="CollegeAttestationDBModel.Debt">
+              <MappingFragment StoreEntitySet="Debts">
+                <ScalarProperty Name="DebtID" ColumnName="DebtID" />
+                <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+                <ScalarProperty Name="DisciplineID" ColumnName="DisciplineID" />
+                <ScalarProperty Name="TeacherID" ColumnName="TeacherID" />
+                <ScalarProperty Name="DebtStatus" ColumnName="DebtStatus" />
+                <ScalarProperty Name="DateRecorded" ColumnName="DateRecorded" />
+                <ScalarProperty Name="IsCleared" ColumnName="IsCleared" />
+                <ScalarProperty Name="DateCleared" ColumnName="DateCleared" />
+                <ScalarProperty Name="Grade" ColumnName="Grade" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Disciplines">
+            <EntityTypeMapping TypeName="CollegeAttestationDBModel.Discipline">
+              <MappingFragment StoreEntitySet="Disciplines">
+                <ScalarProperty Name="DisciplineID" ColumnName="DisciplineID" />
+                <ScalarProperty Name="DisciplineName" ColumnName="DisciplineName" />
+                <ScalarProperty Name="TotalHours" ColumnName="TotalHours" />
+                <ScalarProperty Name="ControlType" ColumnName="ControlType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Groups">
+            <EntityTypeMapping TypeName="CollegeAttestationDBModel.Group">
+              <MappingFragment StoreEntitySet="Groups">
+                <ScalarProperty Name="GroupID" ColumnName="GroupID" />
+                <ScalarProperty Name="GroupName" ColumnName="GroupName" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
+                <ScalarProperty Name="Course" ColumnName="Course" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ResitSchedules">
+            <EntityTypeMapping TypeName="CollegeAttestationDBModel.ResitSchedule">
+              <MappingFragment StoreEntitySet="ResitSchedules">
+                <ScalarProperty Name="ResitScheduleID" ColumnName="ResitScheduleID" />
+                <ScalarProperty Name="DebtID" ColumnName="DebtID" />
+                <ScalarProperty Name="ScheduledDate" ColumnName="ScheduledDate" />
+                <ScalarProperty Name="ClassroomID" ColumnName="ClassroomID" />
+                <ScalarProperty Name="AttemptNumber" ColumnName="AttemptNumber" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Schedules">
+            <EntityTypeMapping TypeName="CollegeAttestationDBModel.Schedule">
+              <MappingFragment StoreEntitySet="Schedules">
+                <ScalarProperty Name="ScheduleID" ColumnName="ScheduleID" />
+                <ScalarProperty Name="DebtID" ColumnName="DebtID" />
+                <ScalarProperty Name="ExamDate" ColumnName="ExamDate" />
+                <ScalarProperty Name="TimeSlot" ColumnName="TimeSlot" />
+                <ScalarProperty Name="ClassroomID" ColumnName="ClassroomID" />
+                <ScalarProperty Name="TimeSlotID" ColumnName="TimeSlotID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Students">
+            <EntityTypeMapping TypeName="CollegeAttestationDBModel.Student">
+              <MappingFragment StoreEntitySet="Students">
+                <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+                <ScalarProperty Name="StudentCardNumber" ColumnName="StudentCardNumber" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="GroupID" ColumnName="GroupID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Teachers">
+            <EntityTypeMapping TypeName="CollegeAttestationDBModel.Teacher">
+              <MappingFragment StoreEntitySet="Teachers">
+                <ScalarProperty Name="TeacherID" ColumnName="TeacherID" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TimeSlots">
+            <EntityTypeMapping TypeName="CollegeAttestationDBModel.TimeSlot">
+              <MappingFragment StoreEntitySet="TimeSlots">
+                <ScalarProperty Name="TimeSlotID" ColumnName="TimeSlotID" />
+                <ScalarProperty Name="SlotNumber" ColumnName="SlotNumber" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="TeacherDisciplines" TypeName="CollegeAttestationDBModel.TeacherDisciplines" StoreEntitySet="TeacherDisciplines">
+            <EndProperty Name="Disciplines">
+              <ScalarProperty Name="DisciplineID" ColumnName="DisciplineID" />
+            </EndProperty>
+            <EndProperty Name="Teachers">
+              <ScalarProperty Name="TeacherID" ColumnName="TeacherID" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

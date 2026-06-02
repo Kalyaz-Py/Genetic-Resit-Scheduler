@@ -1,0 +1,26 @@
+<Window x:Class="diplom.Views.UpdatedSchedulesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Обновлённые записи расписания" Height="500" Width="900" WindowStartupLocation="CenterOwner">
+    <Grid Margin="10">
+        <GroupBox Header="Обновлённые/добавленные записи" Style="{StaticResource ModernGroupBox}">
+            <DataGrid x:Name="DgUpdated" AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="№ зачетки" Binding="{Binding StudentCardNumber}" Width="1*"/>
+                    <DataGridTextColumn Header="Студент" Binding="{Binding StudentName}" Width="2*"/>
+                    <DataGridTextColumn Header="Группа" Binding="{Binding GroupName}" Width="1*"/>
+                    <DataGridTextColumn Header="Дисциплина" Binding="{Binding DisciplineName}" Width="2*"/>
+                    <DataGridTextColumn Header="Преподаватель" Binding="{Binding TeacherName}" Width="1.5*"/>
+                    <DataGridTextColumn Header="Кабинет" Binding="{Binding ClassroomNumber}" Width="1*"/>
+                    <DataGridTextColumn Header="Пара" Binding="{Binding TimeSlotNumber}" Width="0.6*"/>
+                    <DataGridTextColumn Header="Дата экзамена" Binding="{Binding ExamDate, StringFormat='dd.MM.yyyy'}" Width="1.2*"/>
+                    <DataGridTextColumn Header="Статус" Binding="{Binding Status}" Width="0.8*"/>
+                    <DataGridCheckBoxColumn Header="Новая" Binding="{Binding IsNew}" Width="0.6*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </GroupBox>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,10,0,0">
+            <Button Content="Закрыть" Width="120" Margin="5" Click="BtnClose_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

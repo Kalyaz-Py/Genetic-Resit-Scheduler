@@ -1,0 +1,161 @@
+<Window x:Class="diplom.Views.DebtsFilterWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:diplom.Views"
+        mc:Ignorable="d"
+        Title="Просмотр долгов студентов — Фильтрация" 
+        Height="700" Width="1200"
+        WindowStartupLocation="CenterScreen" 
+        Background="#F4F6F7">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Заголовок -->
+        <TextBlock Grid.Row="0" 
+                   Text="Просмотр долгов со сложной фильтрацией" 
+                   Style="{StaticResource MainTitleStyle}"/>
+
+        <!-- Панель фильтров -->
+        <GroupBox Grid.Row="1" Header="Параметры фильтрации" Style="{StaticResource ModernGroupBox}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Студент -->
+                <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,10,0">
+                    <TextBlock Text="Студент:" Style="{StaticResource FormLabelStyle}"/>
+                    <ComboBox Style="{StaticResource ModernComboBox}"
+                              ItemsSource="{Binding Students}"
+                              SelectedItem="{Binding SelectedStudent, Mode=TwoWay}"/>
+                </StackPanel>
+
+                <!-- Предмет -->
+                <StackPanel Grid.Row="0" Grid.Column="1" Margin="0,0,10,0">
+                    <TextBlock Text="Предмет:" Style="{StaticResource FormLabelStyle}"/>
+                    <ComboBox Style="{StaticResource ModernComboBox}"
+                              ItemsSource="{Binding Disciplines}"
+                              SelectedItem="{Binding SelectedDiscipline, Mode=TwoWay}"/>
+                </StackPanel>
+
+                <!-- Группа -->
+                <StackPanel Grid.Row="0" Grid.Column="2" Margin="0,0,10,0">
+                    <TextBlock Text="Группа:" Style="{StaticResource FormLabelStyle}"/>
+                    <ComboBox Style="{StaticResource ModernComboBox}"
+                              ItemsSource="{Binding Groups}"
+                              SelectedItem="{Binding SelectedGroup, Mode=TwoWay}"/>
+                </StackPanel>
+
+                <!-- Преподаватель -->
+                <StackPanel Grid.Row="0" Grid.Column="3">
+                    <TextBlock Text="Преподаватель:" Style="{StaticResource FormLabelStyle}"/>
+                    <ComboBox Style="{StaticResource ModernComboBox}"
+                              ItemsSource="{Binding Teachers}"
+                              SelectedItem="{Binding SelectedTeacher, Mode=TwoWay}"/>
+                </StackPanel>
+
+                <!-- Поиск по тексту -->
+                <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,10,10,0">
+                    <TextBlock Text="Поиск (ФИО, зачетка, предмет):" Style="{StaticResource FormLabelStyle}"/>
+                    <TextBox Style="{StaticResource ModernTextBox}"
+                             Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                </StackPanel>
+
+                <!-- Фильтр по сданности -->
+                <StackPanel Grid.Row="1" Grid.Column="2" Margin="0,10,0,0">
+                    <TextBlock Text="Статус сдачи:" Style="{StaticResource FormLabelStyle}"/>
+                    <ComboBox Style="{StaticResource ModernComboBox}"
+                              ItemsSource="{Binding ClearedFilters}"
+                              SelectedItem="{Binding SelectedClearedFilter, Mode=TwoWay}"
+                              Width="150" HorizontalAlignment="Left"/>
+                </StackPanel>
+
+                <!-- Кнопки действия -->
+                <StackPanel Grid.Row="1" Grid.Column="3"
+                            Orientation="Horizontal" 
+                            VerticalAlignment="Bottom"
+                            HorizontalAlignment="Right"
+                            Margin="0,10,0,0">
+                    <Button Content="🔄 Сбросить фильтры" 
+                            Style="{StaticResource SecondaryButtonStyle}"
+                            Command="{Binding ResetFiltersCommand}"
+                            Margin="0,0,10,0" Width="150"/>
+                    <Button Content="✅ Долг сдан" 
+                            Style="{StaticResource SuccessButtonStyle}"
+                            Click="BtnMarkPassed_Click"
+                            Margin="0,0,10,0" Width="150"/>
+                    <Button Content="📊 Экспорт в Excel" 
+                            Style="{StaticResource SuccessButtonStyle}"
+                            Click="BtnExportToExcel_Click"
+                            Width="150"/>
+                </StackPanel>
+            </Grid>
+        </GroupBox>
+
+        <!-- Таблица долгов -->
+        <GroupBox Grid.Row="2" 
+                  Header="Результаты поиска долгов (всего записей)" 
+                  Style="{StaticResource ModernGroupBox}"
+                  Margin="0,15,0,15">
+            <DataGrid x:Name="DgDebts" 
+                      Style="{StaticResource ModernDataGrid}"
+                      ItemsSource="{Binding FilteredDebts}"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="№ зачетки" Binding="{Binding StudentCardNumber}" Width="0.9*"/>
+                    <DataGridTextColumn Header="Студент (ФИО)" Binding="{Binding StudentName}" Width="2*"/>
+                    <DataGridTextColumn Header="Группа" Binding="{Binding GroupName}" Width="1*"/>
+                    <DataGridTextColumn Header="Дисциплина" Binding="{Binding DisciplineName}" Width="2*"/>
+                    <DataGridTextColumn Header="Преподаватель" Binding="{Binding TeacherName}" Width="1.5*"/>
+                    <DataGridTextColumn Header="Кабинет" Binding="{Binding ClassroomNumber}" Width="1*">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="#2980B9"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Пара" Binding="{Binding TimeSlotID}" Width="0.6*"/>
+                    <DataGridTextColumn Header="Дата экзамена" Binding="{Binding ExamDate, StringFormat='dd.MM.yyyy'}" Width="1.2*"/>
+                    <DataGridTextColumn Header="Статус" Binding="{Binding Status}" Width="1*">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="#C0392B"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </GroupBox>
+
+        <!-- Нижняя панель с информацией -->
+        <Border Grid.Row="3" Style="{StaticResource ModernBorder}" Margin="0,0,0,0">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <TextBlock Text="Найдено записей: " Style="{StaticResource NormalTextStyle}" FontWeight="Bold"/>
+                <TextBlock x:Name="TxtRecordCount" Text="0" Style="{StaticResource NormalTextStyle}" FontWeight="Bold"/>
+                <Button Content="✕ Закрыть" 
+                        Style="{StaticResource SecondaryButtonStyle}"
+                        Click="BtnClose_Click"
+                        Margin="40,0,0,0"
+                        HorizontalAlignment="Right" Width="100"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>
