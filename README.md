@@ -47,7 +47,9 @@
 *   **`Classrooms`:** Аудиторный фонд с указанием вместимости (`Capacity`) и типа кабинета (`ClassroomType`), что позволяет алгоритму автоматически подбирать специализированные классы (например, компьютерные).
 *   **`Users` и `Roles`:** Ролевая модель (`RoleID`, `Name`) для разграничения прав доступа к интерфейсу генерации (Администратор / Диспетчер / Преподаватель).
 
-![Схема базы данных проекта](docs/db_schema.png)
+## Схема базы данных проекта
+<img width="1388" height="844" alt="image" src="https://github.com/user-attachments/assets/925c7847-7a1b-4327-9136-6cbabad635f3" />
+
 
 ---
 
@@ -59,10 +61,16 @@
    ```bash
    git clone [https://github.com/Kalyaz-Py/Genetic-Resit-Scheduler.git](https://github.com/Kalyaz-Py/Genetic-Resit-Scheduler.git)
 
+2. **Разверните базу данных:**
+   * Откройте MS SQL Server Management Studio (SSMS).
+   * Выполните SQL-скрипт создания базы данных и заполнения тестовыми данными.
+
+3. **Настройте строку подключения (Connection String):**
+   * Откройте файл `App.config` в корне проекта.
+   * Измените параметр `connectionString`, указав ваш локальный `Data Source` (имя сервера SQL).
+
+4. **Запуск:**
+   * Откройте `.sln` файл в Visual Studio.
+   * Соберите решение (Build -> Rebuild Solution) и нажмите `F5`.
 
 
-Запуск:
-
-Откройте .sln файл в Visual Studio.
-
-Соберите решение (Build -> Rebuild Solution) и нажмите F5.
